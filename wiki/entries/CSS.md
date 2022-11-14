@@ -1,3 +1,1 @@
-# CSS
-
-CSS is a language that can be used to add style to an [HTML](/wiki/HTML) page.
+Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a document written in a markup language such as HTML or XML (including XML dialects such as SVG, MathML or XHTML).
