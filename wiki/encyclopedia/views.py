@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
+import random
+import markdown2
+
 from . import util
 
 
@@ -20,8 +23,9 @@ def entry(request, title):
 
     # If entry exists then render the page
     if entry:
+        converted = markdown2.markdown(entry)
         return render(request, "encyclopedia/entry.html", {
-            "title": title, "entry": entry
+            "title": title, "entry": converted
         })
 
     # If not extists then go to an error page
@@ -68,6 +72,7 @@ def new_page(request):
         # Save the page and redirect to the new page
         else:
             content = request.POST.get("content")
+            content = "#" + title + "\n" + content
             util.save_entry(title, content)
             return HttpResponseRedirect(reverse('entry', args=[title]))
     
@@ -118,7 +123,13 @@ def editpage(request):
         return HttpResponseRedirect(reverse("entry", args=[title]))
 
 def random_page(request):
-    pass
+    
+    # Get all entries
+    entries = util.list_entries()
+    entry = random.choice(entries)
+
+    return HttpResponseRedirect(reverse("entry", args=[entry]))
+
 
 
 

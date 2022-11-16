@@ -1,1 +1,0 @@
-The dog (Canis familiaris or Canis lupus familiaris) is a domesticated descendant of the wolf.
