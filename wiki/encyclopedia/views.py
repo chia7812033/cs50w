@@ -40,7 +40,7 @@ def search(request):
     entry = util.get_entry(title)
     if entry:
         return render(request, "encyclopedia/entry.html", {
-            "title": title, "entry": entry
+            "title": title, "entry": markdown2.markdown(entry)
         })
 
     # Find entry's substring is match
