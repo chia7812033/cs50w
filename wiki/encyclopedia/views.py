@@ -89,3 +89,37 @@ def fault(request, state):
     return render(request, "encyclopedia/fault.html", {
         "message": message
     })
+
+def editpage(request):
+
+    # Check is jump to the edit page or want to save the page
+    jump = request.POST.get("jump")
+    if (jump == "True"):
+
+        # Get title from entry page
+        title = request.POST.get("title")
+        content = util.get_entry(title)
+
+        # Render the edit page
+        return render(request, "encyclopedia/editpage.html", {
+            "title": title, "content": content
+        })
+
+    # Save the page
+    elif jump == "False":
+
+        # Get title and content from edit page
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+
+        util.save_entry(title, content)
+
+        # Redirect to entry page has been modified
+        return HttpResponseRedirect(reverse("entry", args=[title]))
+
+def random_page(request):
+    pass
+
+
+
+
