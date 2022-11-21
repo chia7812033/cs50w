@@ -1,3 +1,15 @@
 body {
     padding: 10px;
 }
+
+.item {
+    margin-bottom: 30px;
+}
+
+.item-image {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 50px;
+}
+
+
