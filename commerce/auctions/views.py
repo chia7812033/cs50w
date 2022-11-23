@@ -4,15 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-from .models import User, Item
+from .models import User, Listing
 from .form import CreateListingForm
 
 
 
 def index(request):
     
-    return render(request, "auctions/index.html", {"items": Item.objects.all()})
+    return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
 
 
 def login_view(request):
@@ -66,6 +67,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
 def create_listing(request):
 
     if request.method == "POST":
@@ -78,5 +80,13 @@ def create_listing(request):
             messages.error(request, 'Error saving form')
 
     context = {}
-    context['form'] = CreateListingForm()
+    context['form'] = CreateListingForm(initial={"createby": request.user.id})
     return render(request, "auctions/create_listing.html", context)
+
+def listing(request, id):
+
+    listing = Listing.objects.get(id=id)
+
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })

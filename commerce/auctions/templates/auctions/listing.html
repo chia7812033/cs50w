@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="d-flex flex-column justify-content-center">
+        <div class="align-self-center">
+            <img src="{{ listing.imageURL }}" alt="{{ listing.imageURL }}" class="item-image">
+        </div>
+        <div class="align-self-center item-info">
+            <h3 class="item-title">{{ listing }}</h3>
+            <div class="top-bottom-line">
+                <h4 class="description">Price: ${{ listing.price|floatformat:2}}</h4>
+            </div>
+            <form>
+                {% csrf_token %}
+
+            </form>
+            <div class="top-bottom-line">
+                <h5 class="description">{{ listing.description }}</h5>
+            </div>
+            <div class="top-bottom-line">
+                <h6 class="description">Created {{ listing.create_date }}, {{ listing.create_time }} by {{ listing.createby }}</h6>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

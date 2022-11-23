@@ -4,16 +4,37 @@ body {
 
 .item {
     margin-bottom: 30px;
+    height: 300px;
+}
+
+.item-info {
+    max-width: 800px;
 }
 
 .item-image {
     margin-top: 30px;
     margin-bottom: 30px;
     margin-right: 50px;
+    display: flex;
+    max-height: 250px;
+    max-width: 250px;
 }
 
 .item-title {
     width: 800px;
 }
+
+.top-bottom-line {
+    border-top: 2px solid Gainsboro;
+    display: flex;
+    
+}
+
+.description {
+    align-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 
 
