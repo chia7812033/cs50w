@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing
-from .form import CreateListingForm
+from .form import CreateListingForm, BidForm
 
 
 
@@ -84,9 +84,16 @@ def create_listing(request):
     return render(request, "auctions/create_listing.html", context)
 
 def listing(request, id):
+    if request.method == "POST":
+        bid_form = BidForm(request.POST, request.FILES)
+        if bid_form.is_valid():
+            bid_form.save()
+            return HttpResponseRedirect(reverse("listing", args=(id,)))
 
-    listing = Listing.objects.get(id=id)
+    else:
+        listing = Listing.objects.get(id=id)
+        context = {}
+        context['listing'] = listing
+        context['bid_form'] = BidForm(initial={"listing_id": id, "user_id": request.user.id})
 
-    return render(request, "auctions/listing.html", {
-        "listing": listing
-    })
+        return render(request, "auctions/listing.html", context)

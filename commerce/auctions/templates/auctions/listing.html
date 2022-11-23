@@ -1,8 +1,10 @@
 {% extends "auctions/layout.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block body %}
 
-    <div class="d-flex flex-column justify-content-center">
+    <div class="d-flex justify-content-center">
         <div class="align-self-center">
             <img src="{{ listing.imageURL }}" alt="{{ listing.imageURL }}" class="item-image">
         </div>
@@ -11,16 +13,19 @@
             <div class="top-bottom-line">
                 <h4 class="description">Price: ${{ listing.price|floatformat:2}}</h4>
             </div>
-            <form>
+            <form action="{% url 'listing' listing.id %}" method="post">
                 {% csrf_token %}
-
+                {{ bid_form|crispy }}
             </form>
-            <div class="top-bottom-line">
-                <h5 class="description">{{ listing.description }}</h5>
-            </div>
             <div class="top-bottom-line">
                 <h6 class="description">Created {{ listing.create_date }}, {{ listing.create_time }} by {{ listing.createby }}</h6>
             </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-row item-info">
+            <h6 class="mr-2">Desription: </h6>
+            <p>{{ listing.description }}</p>
         </div>
     </div>
 

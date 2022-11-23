@@ -11,3 +11,4 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         widgets = {'listing_id': forms.HiddenInput(), 'user_id': forms.HiddenInput()}
+        exclude = []
