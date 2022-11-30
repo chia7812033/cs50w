@@ -24,3 +24,12 @@ class Bid(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_bid")
     bid = models.DecimalField(max_digits=19, decimal_places=10)
 
+class WatchList(models.Model):
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_watch")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_watch")
+
+class Comment(models.Model):
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_comment")
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comment")
+    comment = models.TextField()
+

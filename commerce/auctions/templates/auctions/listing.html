@@ -13,10 +13,23 @@
             <div class="top-bottom-line">
                 <h4 class="description">Price: ${{ listing.price|floatformat:2}}</h4>
             </div>
-            <form action="{% url 'listing' listing.id %}" method="post">
-                {% csrf_token %}
-                {{ bid_form|crispy }}
-            </form>
+            <div>
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {{ bid_form|crispy }}
+                </form>
+            </div>
+            <div class="mb-4">
+                <form action="{% url 'addwatchlist' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {{ watchlist_form }}
+                    {% if isin_watchlist %}
+                        <input type="submit" class="btn btn-primary" value="Add to Watchlist" disabled>
+                    {% else %}
+                        <input type="submit" class="btn btn-primary" value="Add to Watchlist">
+                    {% endif %}
+                </form>
+            </div>
             <div class="top-bottom-line">
                 <h6 class="description">Created {{ listing.create_date }}, {{ listing.create_time }} by {{ listing.createby }}</h6>
             </div>

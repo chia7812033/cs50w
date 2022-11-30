@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+
+    <div>
+        {% for listing in listings %}
+            <a href="{% url 'listing' listing.id %}">
+                <div class="d-flex justify-content-center border border-secondary rounded item">
+                    <div class="align-self-center">
+                        <img src="{{ listing.imageURL }}" alt="{{ listing.imageURL }}" class="item-image">
+                    </div>
+                    <div class="align-self-center">
+                        <h3 class="item-title">{{ listing }}</h3>
+                        <h4>Price: ${{ listing.price|floatformat:2}}</h4>
+                        <p>Created {{ listing.create_date }}, {{ listing.create_time }}</p>
+                    </div>
+                    <div class="align-self-center">
+                        <form>
+                            <input type="submit" class="btn btn-secondary" value="Remove">
+                        </form>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

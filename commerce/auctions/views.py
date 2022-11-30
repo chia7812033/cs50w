@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing
-from .form import CreateListingForm, BidForm
+from .models import User, Listing, Bid, WatchList
+from .form import CreateListingForm, BidForm, AddWatchlistForm
 
 
 
@@ -70,6 +70,7 @@ def register(request):
 @login_required
 def create_listing(request):
 
+    # Create a new listing
     if request.method == "POST":
         create_listing_form = CreateListingForm(request.POST, request.FILES)
         if create_listing_form.is_valid():
@@ -79,21 +80,60 @@ def create_listing(request):
         else:
             messages.error(request, 'Error saving form')
 
+    # Select createby by the current user
     context = {}
     context['form'] = CreateListingForm(initial={"createby": request.user.id})
     return render(request, "auctions/create_listing.html", context)
 
 def listing(request, id):
+
     if request.method == "POST":
+
+        # Save bid to database
         bid_form = BidForm(request.POST, request.FILES)
         if bid_form.is_valid():
             bid_form.save()
             return HttpResponseRedirect(reverse("listing", args=(id,)))
 
-    else:
+    else:  
+
+        # Get the current listing 
         listing = Listing.objects.get(id=id)
         context = {}
         context['listing'] = listing
+
+        # Add a bid form
         context['bid_form'] = BidForm(initial={"listing_id": id, "user_id": request.user.id})
 
+        # Add a add watch list form
+        context['watchlist_form'] = AddWatchlistForm(initial={"listing_id": id, "user_id": request.user.id})
+
+        # Check if the listing is in watch list
+        object = WatchList.objects.filter(listing_id=id, user_id=request.user.id)
+
+        # Disable the Add watchlist button if is in watchlist
+        if object.exists():
+            context['isin_watchlist'] = True
+        else:
+            context['isin_watchlist'] = False
+
         return render(request, "auctions/listing.html", context)
+
+def add_watchlist(request, listing_id):
+
+    # Add listing to database
+    if request.method == "POST":
+        addwatchlist = AddWatchlistForm(request.POST, request.FILES)
+        if addwatchlist.is_valid():
+            addwatchlist.save()
+
+        # Redirect to listing page
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
+def watchlist(request):
+    in_watchlist_id = request.user.user_watch.all().values_list('listing_id', flat=True)
+    watchlist_listings = Listing.objects.filter(id__in=in_watchlist_id)
+    context = {}
+    context['listings'] = watchlist_listings.all()
+    print(context)
+    return render(request, "auctions/watchlist.html", context)
