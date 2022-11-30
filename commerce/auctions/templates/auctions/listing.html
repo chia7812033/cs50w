@@ -41,5 +41,25 @@
             <p>{{ listing.description }}</p>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+        <div>
+            <h3>Comments: </h3>
+            <form action="{% url 'comment' listing.id %}" method="post">
+                {% csrf_token %}
+                    {{ comment_form|crispy }}
+                    <input type="submit" class="btn btn-primary" value="Send">
+            </form>
+            <div>
+                {% for comment in comments %}
+                    <div class="comment">
+                        <hr>
+                        <h6 class="fw-bold mb-1">{{ comment.user_id }}</h6>
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Bid, WatchList
-from .form import CreateListingForm, BidForm, AddWatchlistForm
+from .models import User, Listing, WatchList
+from .form import CreateListingForm, BidForm, AddWatchlistForm, CommentForm
 
 
 
@@ -108,6 +108,9 @@ def listing(request, id):
         # Add a add watch list form
         context['watchlist_form'] = AddWatchlistForm(initial={"listing_id": id, "user_id": request.user.id})
 
+        # Add a comment form
+        context['comment_form'] = CommentForm(initial={"listing_id": id, "user_id": request.user.id})
+
         # Check if the listing is in watch list
         object = WatchList.objects.filter(listing_id=id, user_id=request.user.id)
 
@@ -116,6 +119,10 @@ def listing(request, id):
             context['isin_watchlist'] = True
         else:
             context['isin_watchlist'] = False
+
+        # Get comment 
+        comments = listing.listing_comment.all()
+        context['comments'] = comments
 
         return render(request, "auctions/listing.html", context)
 
@@ -137,3 +144,13 @@ def watchlist(request):
     context['listings'] = watchlist_listings.all()
     print(context)
     return render(request, "auctions/watchlist.html", context)
+
+def comment(request, listing_id):
+    if request.method == "POST":
+        comment = CommentForm(request.POST, request.FILES)
+        if comment.is_valid():
+            comment.save()
+
+        # Redirect to listing page
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        
