@@ -1,3 +1,30 @@
 textarea {
     min-height: 400px;
 }
+
+#email-sender {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    margin: 10px;
+    font-weight: bold;
+}
+
+#email-subject {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    margin: 10px;
+}
+
+#email-time {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    margin: 10px;
+    color: gray;
+    margin-left: auto;
+}
